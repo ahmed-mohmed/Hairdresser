@@ -1,0 +1,36 @@
+﻿
+@model IEnumerable<Hairdresser_Website.Models.Appointment>
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container mt-4">
+    <h2 class="mb-4">Appointments</h2>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Service</th>
+                <th>Employee</th>
+                <th>Date & Time</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var appointment in Model)
+            {
+                <tr>
+                    <td>@appointment.Service.Name</td>
+                    <td>@appointment.Employee.Name</td>
+                    <td>@appointment.AppointmentDate.ToString("g")</td>
+                    <td>@appointment.Status</td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@appointment.AppointmentId" class="btn btn-warning btn-sm">Edit</a>
+                        <a asp-action="Delete" asp-route-id="@appointment.AppointmentId" class="btn btn-danger btn-sm">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

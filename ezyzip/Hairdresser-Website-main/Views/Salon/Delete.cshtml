@@ -1,0 +1,62 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@model Hairdresser_Website.Models.Salon
+
+<h2 class="text-center mt-4 mb-4 text-danger">Delete Salon</h2>
+
+<div class="alert alert-warning text-center shadow-sm rounded mb-4">
+    <p class="fw-bold">Are you sure you want to delete the following salon?</p>
+    <p>This action cannot be undone.</p>
+</div>
+
+<div class="table-responsive mb-4">
+    <table class="table table-hover table-bordered shadow-sm rounded">
+        <thead class="table-dark">
+            <tr>
+                <th>Detail</th>
+                <th>Information</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <th scope="row">Name</th>
+                <td>@Model.Name</td>
+            </tr>
+            <tr>
+                <th scope="row">Location</th>
+                <td>@Model.Location</td>
+            </tr>
+            <tr>
+                <th scope="row">Working Hours</th>
+                <td>
+                    @if (Model.WorkingHours != null && Model.WorkingHours.Any())
+
+                    {
+                        <ul class="list-group list-group-flush">
+                            @foreach (var workingHours in Model.WorkingHours.OrderBy(wh => wh.DayOfWeek))
+
+                            {
+                                <li class="list-group-item d-flex justify-content-between">
+                                    <span>@workingHours.DayOfWeek</span>
+                                    <span>@workingHours.StartTime.ToString(@"hh\:mm") - @workingHours.EndTime.ToString(@"hh\:mm")</span>
+                                </li>
+                            }
+                        </ul>
+                    }
+
+                    else
+
+                    {
+                        <span class="text-muted fst-italic">Not specified</span>
+                    }
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<form method="post" asp-action="Delete" asp-route-id="@Model.SalonId" class="text-center">
+    <button type="submit" class="btn btn-danger rounded-pill px-5 shadow-sm me-3">Delete</button>
+    <a href="/Salon/Index" class="btn btn-secondary rounded-pill px-5 shadow-sm">Cancel</a>
+</form>

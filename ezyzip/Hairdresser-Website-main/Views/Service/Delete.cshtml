@@ -1,0 +1,29 @@
+﻿@model Hairdresser_Website.Models.Service
+
+<h2>Delete Service</h2>
+
+<p>Are you sure you want to delete the following service?</p>
+
+<table class="table">
+    <tr>
+        <th>Name</th>
+        <td>@Model.Name</td>
+    </tr>
+    <tr>
+        <th>Price</th>
+        <td>@Model.Price.ToString("C")</td>
+    </tr>
+    <tr>
+        <th>Duration</th>
+        <td>@Model.Duration minutes</td>
+    </tr>
+    <tr>
+        <th>Salon</th>
+        <td>@Model.Salon.Name</td>
+    </tr>
+</table>
+
+<form method="post" asp-action="Delete" asp-route-id="@Model.ServiceId">
+    <button type="submit" class="btn btn-danger">Delete</button>
+    <a href="/Service/Index" class="btn btn-secondary">Cancel</a>
+</form>

@@ -1,0 +1,60 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@model Hairdresser_Website.Models.Salon
+
+<h2 class="text-center mt-4 mb-4">Edit Salon</h2>
+
+<form method="post" asp-controller="Salon" asp-action="Edit" class="shadow-sm p-4 rounded bg-light">
+    <input type="hidden" asp-for="SalonId" />
+
+    <div class="mb-3">
+        <label asp-for="Name" class="form-label fw-bold">Name</label>
+        <input type="text" asp-for="Name" class="form-control rounded-pill shadow-sm" required />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Location" class="form-label fw-bold">Location</label>
+        <input type="text" asp-for="Location" class="form-control rounded-pill shadow-sm" required />
+        <span asp-validation-for="Location" class="text-danger"></span>
+    </div>
+
+    <h4 class="mt-4 mb-3">Working Hours</h4>
+    <div class="table-responsive">
+        <table class="table table-hover table-bordered shadow-sm rounded">
+            <thead class="table-dark">
+                <tr>
+                    <th>Day of Week</th>
+                    <th>Start Time</th>
+                    <th>End Time</th>
+                </tr>
+            </thead>
+            <tbody id="workingHoursTable">
+                @for (int i = 0; i < 7; i++)
+
+                {
+                    var dayOfWeek = (Hairdresser_Website.Models.DayOfWeek)i;
+                    var workingHours = Model.WorkingHours.FirstOrDefault(wh => wh.DayOfWeek == dayOfWeek);
+                    <tr>
+                        <td class="align-middle">
+                            <input type="hidden" name="WorkingHours[@i].DayOfWeek" value="@dayOfWeek" />
+                            <span class="fw-bold">@dayOfWeek</span>
+                        </td>
+                        <td>
+                            <input type="time" name="WorkingHours[@i].StartTime" value="@(workingHours?.StartTime.ToString(@"hh\:mm"))" class="form-control rounded shadow-sm" />
+                        </td>
+                        <td>
+                            <input type="time" name="WorkingHours[@i].EndTime" value="@(workingHours?.EndTime.ToString(@"hh\:mm"))" class="form-control rounded shadow-sm" />
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <div class="text-center mt-4">
+        <button type="submit" class="btn btn-success rounded-pill px-5 shadow-sm">Save</button>
+        <a href="/Salon" class="btn btn-secondary rounded-pill px-5 shadow-sm ms-3">Cancel</a>
+    </div>
+</form>

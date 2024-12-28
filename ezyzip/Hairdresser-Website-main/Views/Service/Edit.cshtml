@@ -1,0 +1,43 @@
+﻿@model Hairdresser_Website.Models.Service
+
+<h2>Edit Service</h2>
+
+<form method="post" asp-controller="Service" asp-action="Edit">
+    <!-- حقل مخفي لتخزين معرف الخدمة -->
+    <input type="hidden" asp-for="ServiceId" />
+
+    <!-- تعديل الاسم -->
+    <div class="form-group">
+        <label asp-for="Name">Name</label>
+        <input type="text" asp-for="Name" class="form-control" required />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+
+    <!-- تعديل السعر -->
+    <div class="form-group">
+        <label asp-for="Price">Price</label>
+        <input type="number" asp-for="Price" step="0.01" class="form-control" required />
+        <span asp-validation-for="Price" class="text-danger"></span>
+    </div>
+
+    <!-- تعديل المدة -->
+    <div class="form-group">
+        <label asp-for="Duration">Duration (minutes)</label>
+        <input type="number" asp-for="Duration" class="form-control" required />
+        <span asp-validation-for="Duration" class="text-danger"></span>
+    </div>
+
+    <!-- اختيار الصالون المرتبط -->
+    <div class="form-group">
+        <label asp-for="SalonId">Salon</label>
+        <select asp-for="SalonId" class="form-control" asp-items="ViewBag.Salons">
+            <option value="">-- Select a Salon --</option>
+        </select>
+        <span asp-validation-for="SalonId" class="text-danger"></span>
+    </div>
+
+    <!-- زر الحفظ -->
+    <button type="submit" class="btn btn-primary mt-3">Save</button>
+    <!-- زر الإلغاء -->
+    <a href="/Service/Index" class="btn btn-secondary mt-3">Cancel</a>
+</form>

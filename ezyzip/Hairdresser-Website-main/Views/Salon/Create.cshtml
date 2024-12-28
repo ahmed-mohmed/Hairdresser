@@ -1,0 +1,84 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@model Hairdresser_Website.Models.Salon
+
+<h2 class="text-center mt-4 mb-4">Add Salon</h2>
+
+<form method="post" asp-controller="Salon" asp-action="Create" class="shadow-sm p-4 rounded bg-light">
+    <div class="mb-3">
+        <label asp-for="Name" class="form-label fw-bold">Name</label>
+        <input type="text" asp-for="Name" class="form-control rounded-pill shadow-sm" required />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+    
+    <div class="mb-3">
+        <label asp-for="Location" class="form-label fw-bold">Location</label>
+        <input type="text" asp-for="Location" class="form-control rounded-pill shadow-sm" required />
+        <span asp-validation-for="Location" class="text-danger"></span>
+    </div>
+
+    <h4 class="mt-4 mb-3">Working Hours</h4>
+    <div class="table-responsive">
+        <table class="table table-hover table-bordered shadow-sm rounded">
+            <thead class="table-dark">
+                <tr>
+                    <th>Day of Week</th>
+                    <th>Start Time</th>
+                    <th>End Time</th>
+                </tr>
+            </thead>
+            <tbody id="workingHoursTable">
+                @for (int i = 0; i < 7; i++)
+                {
+                    <tr>
+                        <td class="align-middle">
+                            <input type="hidden" name="workingHours[@i].DayOfWeek" value="@((Hairdresser_Website.Models.DayOfWeek)i)" />
+                            <span class="fw-bold">@((Hairdresser_Website.Models.DayOfWeek)i)</span>
+                        </td>
+                        <td>
+                            <input type="time" id="startTime-@i" name="workingHours[@i].StartTime" class="form-control rounded shadow-sm" />
+                        </td>
+                        <td>
+                            <input type="time" id="endTime-@i" name="workingHours[@i].EndTime" class="form-control rounded shadow-sm" />
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <div class="text-center mt-4">
+        <button type="submit" class="btn btn-success rounded-pill px-5 shadow-sm me-3">Save</button>
+        <a href="/Salon" class="btn btn-secondary rounded-pill px-5 shadow-sm">Cancel</a>
+    </div>
+</form>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const mondayStartTime = document.getElementById('startTime-0');
+            const mondayEndTime = document.getElementById('endTime-0');
+
+            function fillOtherDays() {
+                const startTimeValue = mondayStartTime.value;
+                const endTimeValue = mondayEndTime.value;
+
+                for (let i = 1; i < 7; i++) {
+                    const startTimeInput = document.getElementById(`startTime-${i}`);
+                    const endTimeInput = document.getElementById(`endTime-${i}`);
+
+                    if (startTimeInput && !startTimeInput.value) {
+                        startTimeInput.value = startTimeValue;
+                    }
+                    if (endTimeInput && !endTimeInput.value) {
+                        endTimeInput.value = endTimeValue;
+                    }
+                }
+            }
+
+            mondayStartTime.addEventListener('change', fillOtherDays);
+            mondayEndTime.addEventListener('change', fillOtherDays);
+        });
+    </script>
+}

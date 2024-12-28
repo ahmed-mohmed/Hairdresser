@@ -1,0 +1,91 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@model IEnumerable<Hairdresser_Website.Models.Salon>
+
+<h2 class="text-center mt-4 mb-4">Salons</h2>
+
+<div class="text-end mb-4">
+    <a href="/Salon/Create" class="btn btn-primary shadow-sm rounded-pill px-4">Add Salon</a>
+</div>
+
+<div class="table-responsive">
+    <table class="table table-hover shadow-sm rounded">
+        <thead class="table-dark">
+            <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Location</th>
+                <th scope="col">Working Hours</th>
+                <th scope="col">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var salon in Model)
+            {
+                    <tr>
+                        <td>@salon.Name</td>
+                        <td>@salon.Location</td>
+                        <td>
+                        @if (salon.WorkingHours != null && salon.WorkingHours.Any())
+
+                        {
+                                    <ul class="list-group list-group-flush">
+                                @foreach (var workingHours in salon.WorkingHours.OrderBy(wh => wh.DayOfWeek))
+
+                                {
+                                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                    <span>@workingHours.DayOfWeek</span>
+                                                    <span>@workingHours.StartTime.ToString(@"hh\:mm") - @workingHours.EndTime.ToString(@"hh\:mm")</span>
+                                                </li>
+                                }
+                                    </ul>
+                        }
+
+                        else
+
+                        {
+                                    <span class="text-muted fst-italic">Not specified</span>
+                        }
+                        </td>
+                        <td>
+                            <div class="btn-group">
+                                <a href="/Salon/Edit/@salon.SalonId" class="btn btn-sm btn-warning rounded-pill px-3">Edit</a>
+                                <button class="btn btn-sm btn-danger rounded-pill px-3" data-bs-toggle="modal" data-bs-target="#deleteModal" data-id="@salon.SalonId">Delete</button>
+                            </div>
+                        </td>
+                    </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title" id="deleteModalLabel">Confirm Deletion</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to delete this salon? This action cannot be undone.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <a href="#" id="confirmDelete" class="btn btn-danger">Delete</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const deleteModal = document.getElementById('deleteModal');
+        deleteModal.addEventListener('show.bs.modal', function (event) {
+            const button = event.relatedTarget;
+            const salonId = button.getAttribute('data-id');
+            const confirmDelete = deleteModal.querySelector('#confirmDelete');
+            confirmDelete.href = `/Salon/Delete/${salonId}`;
+        });
+    });
+</script>
